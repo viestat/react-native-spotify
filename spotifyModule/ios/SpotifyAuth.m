@@ -48,6 +48,25 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
   return YES;
 }
 
+-(BOOL)urlCallback: (NSURL *)url {
+  if ([[SPTAuth defaultInstance] canHandleURL:url]) {
+    [[SPTAuth defaultInstance] handleAuthCallbackWithTriggeredAuthURL:url callback:^(NSError *error, SPTSession *session) {
+      
+      if (error != nil) {
+        NSLog(@"*** Auth error: %@", error);
+        return;
+      }
+      
+      //Set the session property to the seesion we got from the login Url
+      _session = session;
+      
+    }];
+    return YES;
+  }
+  
+  return NO;
+}
+
 
 + (id)sharedManager {
   static SpotifyAuth *sharedMyManager = nil;
