@@ -48,4 +48,14 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
   return YES;
 }
 
+
++ (id)sharedManager {
+  static SpotifyAuth *sharedMyManager = nil;
+  @synchronized(self) {
+    if (sharedMyManager == nil)
+      sharedMyManager = [[self alloc] init];
+  }
+  return sharedMyManager;
+}
+
 @end
