@@ -8,6 +8,7 @@
 
 #import "SpotifyLoginViewController.h"
 #import "AppDelegate.h"
+#import "SpotifyAuth.h"
 
 @interface SpotifyLoginViewController () <WKNavigationDelegate>
 @property (strong, nonatomic) WKWebView *webView;
@@ -53,6 +54,21 @@
   _login = url;
   return self;
 }
+
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+      NSURL *url = navigationAction.request.URL;
+      //Set myScheme to your own Url Scheme
+      NSString *myScheme = @"Your-Url-Scheme";
+      if ([url.scheme isEqualToString:myScheme]) {
+        [self hideTheThing];
+        SpotifyAuth *sharedManager = [SpotifyAuth sharedManager];
+        [sharedManager urlCallback:url];
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+      }
+      decisionHandler(WKNavigationActionPolicyAllow);
+    }
 
 
 /*
