@@ -196,6 +196,35 @@ RCT_EXPORT_METHOD(stop:(RCTResponseSenderBlock)block)
   }];
 }
 
+//Go to the next track in the queue
+RCT_EXPORT_METHOD(skipNext:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn skipNext:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
+
+//Go to the previous track in the queue
+RCT_EXPORT_METHOD(skipPrevious:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn skipPrevious:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
+
+
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
   [[SPTAuth defaultInstance] setClientID:clientID];
   [[SPTAuth defaultInstance] setRedirectURL:[NSURL URLWithString:redirectURL]];
