@@ -154,6 +154,47 @@ RCT_EXPORT_METHOD(replaceURIs:(NSArray *)uris withCurrentTrack:(int)index callba
   }];
 }
 
+//Play a Spotify URI.
+RCT_EXPORT_METHOD(playURI:(NSString *)uri callback:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn playURI:[NSURL URLWithString:uri] callback:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
+
+//Queue a Spotify URI.
+RCT_EXPORT_METHOD(queueURI:(NSString *)uri callback:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn queueURI:[NSURL URLWithString:uri] callback:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
+
+//Stop playback and clear the queue and list of tracks.
+RCT_EXPORT_METHOD(stop:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn stop:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
 
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
   [[SPTAuth defaultInstance] setClientID:clientID];
