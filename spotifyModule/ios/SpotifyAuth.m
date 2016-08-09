@@ -134,6 +134,26 @@ RCT_EXPORT_METHOD(playURIs:(NSArray *)uris withOptions:(NSDictionary *)options c
   }];
 }
 
+// Replace the current list of tracks without stopping playback.
+RCT_EXPORT_METHOD(replaceURIs:(NSArray *)uris withCurrentTrack:(int)index callback:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  NSMutableArray *urisArr = [NSMutableArray arrayWithArray:uris];
+  //Turn all the strings in urisArr to NSURL
+  for (int i = 0; i < [urisArr count]; i++) {
+    urisArr[i] = [NSURL URLWithString:urisArr[i]];
+  }
+  
+  [sharedIn replaceURIs:urisArr withCurrentTrack:index callback:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
+
 
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
   [[SPTAuth defaultInstance] setClientID:clientID];
