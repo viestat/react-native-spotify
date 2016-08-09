@@ -20,12 +20,33 @@
 
 RCT_EXPORT_MODULE()
 
+//Start Auth process
 RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
                   setRedirectURL:(NSString *) redirectURL
                   setRequestedScopes:(NSArray *) requestedScopes)
 {
   [self startAuth:clientID setRedirectURL:redirectURL setRequestedScopes:requestedScopes];
 }
+
+//Logout from Spotify
+RCT_EXPORT_METHOD(logout)
+{
+  [self.player logout];
+}
+
+//Returns true when SPTAudioStreamingController is initialized, otherwise false
+RCT_EXPORT_METHOD(initialized:(RCTResponseSenderBlock)block)
+{
+  block(@[[NSNull null], @([self.player initialized])]);
+}
+
+//Returns true if the receiver is logged into the Spotify service, otherwise false
+RCT_EXPORT_METHOD(loggedIn:(RCTResponseSenderBlock)block)
+{
+  block(@[[NSNull null], @([self.player loggedIn])]);
+}
+
+
 
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
   [[SPTAuth defaultInstance] setClientID:clientID];
@@ -68,14 +89,16 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
       }
       
       [self.player loginWithAccessToken:_session.accessToken];
-      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
-      //this method plays the tracks in an Array
-      [self.player playURIs:@[trackURI] fromIndex:0 callback:^(NSError *error) {
-        if (error != nil) {
-          NSLog(@"*** Starting playback got error: %@", error);
-          return;
-        }
-      }];
+      
+      //this is used to play a song
+//      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
+//      //this method plays the tracks in an Array
+//      [self.player playURIs:@[trackURI] fromIndex:0 callback:^(NSError *error) {
+//        if (error != nil) {
+//          NSLog(@"*** Starting playback got error: %@", error);
+//          return;
+//        }
+//      }];
   
       
       
