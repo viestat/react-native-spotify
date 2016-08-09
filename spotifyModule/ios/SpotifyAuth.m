@@ -69,7 +69,8 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
       
       [self.player loginWithAccessToken:_session.accessToken];
       NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
-      [self.player playURI:trackURI callback:^(NSError *error) {
+      //this method plays the tracks in an Array
+      [self.player playURIs:@[trackURI] fromIndex:0 callback:^(NSError *error) {
         if (error != nil) {
           NSLog(@"*** Starting playback got error: %@", error);
           return;
