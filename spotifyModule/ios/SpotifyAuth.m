@@ -31,21 +31,79 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
 //Logout from Spotify
 RCT_EXPORT_METHOD(logout)
 {
-  [self.player logout];
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn logout];
 }
 
 //Returns true when SPTAudioStreamingController is initialized, otherwise false
 RCT_EXPORT_METHOD(initialized:(RCTResponseSenderBlock)block)
 {
-  block(@[[NSNull null], @([self.player initialized])]);
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[[NSNull null], @([sharedIn initialized])]);
 }
 
 //Returns true if the receiver is logged into the Spotify service, otherwise false
 RCT_EXPORT_METHOD(loggedIn:(RCTResponseSenderBlock)block)
 {
-  block(@[[NSNull null], @([self.player loggedIn])]);
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[[NSNull null], @([sharedIn loggedIn])]);
 }
 
+//Set playback volume to the given level. Volume is a value between `0.0` and `1.0`.
+RCT_EXPORT_METHOD(setVolume:(CGFloat)volume callback:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn setVolume:volume callback:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
+
+//Set the target streaming bitrate. 0 for low, 1 for normal and 2 for high
+RCT_EXPORT_METHOD(setTargetBitrate:(NSInteger)bitrate callback:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn setTargetBitrate:bitrate callback:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
+
+//Seek playback to a given location in the current track (in secconds).
+RCT_EXPORT_METHOD(seekToOffset:(CGFloat)offset callback:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn seekToOffset:offset callback:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
+
+//Set the "playing" status of the receiver. Pass true to resume playback, or false to pause it.
+RCT_EXPORT_METHOD(setIsPlaying:(BOOL)playing callback:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn setIsPlaying: playing callback:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
 
 
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
@@ -91,14 +149,14 @@ RCT_EXPORT_METHOD(loggedIn:(RCTResponseSenderBlock)block)
       [self.player loginWithAccessToken:_session.accessToken];
       
       //this is used to play a song
-//      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
-//      //this method plays the tracks in an Array
-//      [self.player playURIs:@[trackURI] fromIndex:0 callback:^(NSError *error) {
-//        if (error != nil) {
-//          NSLog(@"*** Starting playback got error: %@", error);
-//          return;
-//        }
-//      }];
+      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
+      //this method plays the tracks in an Array
+      [self.player playURIs:@[trackURI] fromIndex:0 callback:^(NSError *error) {
+        if (error != nil) {
+          NSLog(@"*** Starting playback got error: %@", error);
+          return;
+        }
+      }];
   
       
       
