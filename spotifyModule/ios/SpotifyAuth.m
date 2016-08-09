@@ -35,7 +35,6 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
   // Construct a login URL 
   NSURL *loginURL = [[SPTAuth defaultInstance] loginURL];
 
-  
   AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
   // init the webView with the loginURL
   SpotifyLoginViewController *webView1 =[[SpotifyLoginViewController alloc] initWithURL:loginURL];
@@ -43,6 +42,7 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
   
   //Present the webView over the rootView
   [delegate.window.rootViewController presentViewController: controller animated:YES completion:nil];
+  
 
   
   return YES;
@@ -57,8 +57,27 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
         return;
       }
       
-      //Set the session property to the seesion we got from the login Url
-      _session = session;
+      // Create a new player if needed
+      if (self.player == nil) {
+        //Set the session property to the seesion we got from the login Url
+        _session = session;
+        SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+        [sharedIn startWithClientId:[SPTAuth defaultInstance].clientID error:nil];
+        self.player = sharedIn;
+
+      }
+      
+      [self.player loginWithAccessToken:_session.accessToken];
+      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
+      [self.player playURI:trackURI callback:^(NSError *error) {
+        if (error != nil) {
+          NSLog(@"*** Starting playback got error: %@", error);
+          return;
+        }
+      }];
+  
+      
+      
       
     }];
     return YES;
@@ -66,7 +85,6 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
   
   return NO;
 }
-
 
 + (id)sharedManager {
   static SpotifyAuth *sharedMyManager = nil;
