@@ -105,6 +105,35 @@ RCT_EXPORT_METHOD(setIsPlaying:(BOOL)playing callback:(RCTResponseSenderBlock)bl
   }];
 }
 
+//Play a list of Spotify URIs.(at most 100 tracks).`SPTPlayOptions` containing extra information about the play request
+//such as which track to play and from which starting position within the track.
+RCT_EXPORT_METHOD(playURIs:(NSArray *)uris withOptions:(NSDictionary *)options callback:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  NSMutableArray *urisArr = [NSMutableArray arrayWithArray:uris];
+  SPTPlayOptions *playOptions = [[SPTPlayOptions alloc] init];
+  //set the properties of the SPTPlayOptions 'options'
+  if(options[@"trackIndex"] != nil){
+    [playOptions setTrackIndex:[[options objectForKey:@"trackIndex"]intValue]];
+  }
+  if(options[@"startTime"] != nil){
+    [playOptions setStartTime:[options[@"startTime"] floatValue]];
+  }
+  
+  //Turn all the strings in urisArr to NSURL
+  for (int i = 0; i < [urisArr count]; i++) {
+    urisArr[i] = [NSURL URLWithString:urisArr[i]];
+  }
+  [sharedIn playURIs:urisArr withOptions:playOptions callback:^(NSError *error) {
+    if(error == nil){
+      block(@[[NSNull null]]);
+    }else{
+      block(@[error]);
+    }
+    return;
+  }];
+}
+
 
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
   [[SPTAuth defaultInstance] setClientID:clientID];
@@ -148,15 +177,16 @@ RCT_EXPORT_METHOD(setIsPlaying:(BOOL)playing callback:(RCTResponseSenderBlock)bl
       
       [self.player loginWithAccessToken:_session.accessToken];
       
-      //this is used to play a song
-      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
-      //this method plays the tracks in an Array
-      [self.player playURIs:@[trackURI] fromIndex:0 callback:^(NSError *error) {
-        if (error != nil) {
-          NSLog(@"*** Starting playback got error: %@", error);
-          return;
-        }
-      }];
+//      //this is used to play a song
+//      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
+//      NSLog(@">>>>>>>>>>>>> %@",trackURI);
+//      //this method plays the tracks in an Array
+//      [self.player playURIs:@[trackURI] fromIndex:0 callback:^(NSError *error) {
+//        if (error != nil) {
+//          NSLog(@"*** Starting playback got error: %@", error);
+//          return;
+//        }
+//      }];
   
       
       
