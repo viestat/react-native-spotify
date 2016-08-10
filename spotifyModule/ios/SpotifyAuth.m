@@ -39,14 +39,14 @@ RCT_EXPORT_METHOD(logout)
 RCT_EXPORT_METHOD(initialized:(RCTResponseSenderBlock)block)
 {
   SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[[NSNull null], @([sharedIn initialized])]);
+  block(@[@([sharedIn initialized])]);
 }
 
 //Returns true if the receiver is logged into the Spotify service, otherwise false
 RCT_EXPORT_METHOD(loggedIn:(RCTResponseSenderBlock)block)
 {
   SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[[NSNull null], @([sharedIn loggedIn])]);
+  block(@[@([sharedIn loggedIn])]);
 }
 
 //Set playback volume to the given level. Volume is a value between `0.0` and `1.0`.
@@ -224,6 +224,69 @@ RCT_EXPORT_METHOD(skipPrevious:(RCTResponseSenderBlock)block)
   }];
 }
 
+//Returns true if the receiver is playing audio, otherwise false
+RCT_EXPORT_METHOD(isPlaying:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn isPlaying])]);
+}
+
+//Returns the volume
+RCT_EXPORT_METHOD(volume:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn volume])]);
+}
+
+//Returns true if the receiver expects shuffled playback, otherwise false
+RCT_EXPORT_METHOD(shuffle:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn shuffle])]);
+}
+
+//Returns true if the receiver expects repeated playback, otherwise false
+RCT_EXPORT_METHOD(repeat:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn repeat])]);
+}
+
+//Returns the current approximate playback position of the current track
+RCT_EXPORT_METHOD(currentPlaybackPosition:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn currentPlaybackPosition])]);
+}
+
+//Returns the length of the current track
+RCT_EXPORT_METHOD(currentTrackDuration:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn currentTrackDuration])]);
+}
+
+//Returns the current track URI, playing or not
+RCT_EXPORT_METHOD(currentTrackURI:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[[[sharedIn currentTrackURI] absoluteString]]);
+}
+
+//Returns the currenly playing track index
+RCT_EXPORT_METHOD(currentTrackIndex:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn currentTrackIndex])]);
+}
+
+//Returns the current streaming bitrate the receiver is using
+RCT_EXPORT_METHOD(targetBitrate:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn targetBitrate])]);
+}
+
 
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
   [[SPTAuth defaultInstance] setClientID:clientID];
@@ -267,16 +330,16 @@ RCT_EXPORT_METHOD(skipPrevious:(RCTResponseSenderBlock)block)
       
       [self.player loginWithAccessToken:_session.accessToken];
       
-//      //this is used to play a song
-//      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
-//      NSLog(@">>>>>>>>>>>>> %@",trackURI);
-//      //this method plays the tracks in an Array
-//      [self.player playURIs:@[trackURI] fromIndex:0 callback:^(NSError *error) {
-//        if (error != nil) {
-//          NSLog(@"*** Starting playback got error: %@", error);
-//          return;
-//        }
-//      }];
+      //this is used to play a song
+      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
+      NSURL *trackURI2 = [NSURL URLWithString:@"spotify:track:6HxIUB3fLRS8W3LfYPE8tP"];
+      //this method plays the tracks in an Array
+      [self.player playURIs:@[trackURI, trackURI2, trackURI, trackURI2] fromIndex:0 callback:^(NSError *error) {
+        if (error != nil) {
+          NSLog(@"*** Starting playback got error: %@", error);
+          return;
+        }
+      }];
   
       
       
