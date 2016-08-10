@@ -28,12 +28,13 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
   [self startAuth:clientID setRedirectURL:redirectURL setRequestedScopes:requestedScopes];
 }
 
-//Logout from Spotify
-RCT_EXPORT_METHOD(logout)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  [sharedIn logout];
-}
+/////////////////////////////////
+////  SPTAudioStreamingController
+/////////////////////////////////
+
+///-----------------------------
+/// Properties
+///-----------------------------
 
 //Returns true when SPTAudioStreamingController is initialized, otherwise false
 RCT_EXPORT_METHOD(initialized:(RCTResponseSenderBlock)block)
@@ -47,6 +48,80 @@ RCT_EXPORT_METHOD(loggedIn:(RCTResponseSenderBlock)block)
 {
   SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
   block(@[@([sharedIn loggedIn])]);
+}
+
+//Returns true if the receiver is playing audio, otherwise false
+RCT_EXPORT_METHOD(isPlaying:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn isPlaying])]);
+}
+
+//Returns the volume
+RCT_EXPORT_METHOD(volume:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn volume])]);
+}
+
+//Returns true if the receiver expects shuffled playback, otherwise false
+RCT_EXPORT_METHOD(shuffle:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn shuffle])]);
+}
+
+//Returns true if the receiver expects repeated playback, otherwise false
+RCT_EXPORT_METHOD(repeat:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn repeat])]);
+}
+
+//Returns the current approximate playback position of the current track
+RCT_EXPORT_METHOD(currentPlaybackPosition:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn currentPlaybackPosition])]);
+}
+
+//Returns the length of the current track
+RCT_EXPORT_METHOD(currentTrackDuration:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn currentTrackDuration])]);
+}
+
+//Returns the current track URI, playing or not
+RCT_EXPORT_METHOD(currentTrackURI:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[[[sharedIn currentTrackURI] absoluteString]]);
+}
+
+//Returns the currenly playing track index
+RCT_EXPORT_METHOD(currentTrackIndex:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn currentTrackIndex])]);
+}
+
+//Returns the current streaming bitrate the receiver is using
+RCT_EXPORT_METHOD(targetBitrate:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  block(@[@([sharedIn targetBitrate])]);
+}
+
+///-----------------------------
+/// Methods
+///-----------------------------
+
+//Logout from Spotify
+RCT_EXPORT_METHOD(logout)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  [sharedIn logout];
 }
 
 //Set playback volume to the given level. Volume is a value between `0.0` and `1.0`.
@@ -224,68 +299,10 @@ RCT_EXPORT_METHOD(skipPrevious:(RCTResponseSenderBlock)block)
   }];
 }
 
-//Returns true if the receiver is playing audio, otherwise false
-RCT_EXPORT_METHOD(isPlaying:(RCTResponseSenderBlock)block)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[@([sharedIn isPlaying])]);
-}
+/////////////////////////////////
+////  END SPTAudioStreamingController
+/////////////////////////////////
 
-//Returns the volume
-RCT_EXPORT_METHOD(volume:(RCTResponseSenderBlock)block)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[@([sharedIn volume])]);
-}
-
-//Returns true if the receiver expects shuffled playback, otherwise false
-RCT_EXPORT_METHOD(shuffle:(RCTResponseSenderBlock)block)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[@([sharedIn shuffle])]);
-}
-
-//Returns true if the receiver expects repeated playback, otherwise false
-RCT_EXPORT_METHOD(repeat:(RCTResponseSenderBlock)block)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[@([sharedIn repeat])]);
-}
-
-//Returns the current approximate playback position of the current track
-RCT_EXPORT_METHOD(currentPlaybackPosition:(RCTResponseSenderBlock)block)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[@([sharedIn currentPlaybackPosition])]);
-}
-
-//Returns the length of the current track
-RCT_EXPORT_METHOD(currentTrackDuration:(RCTResponseSenderBlock)block)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[@([sharedIn currentTrackDuration])]);
-}
-
-//Returns the current track URI, playing or not
-RCT_EXPORT_METHOD(currentTrackURI:(RCTResponseSenderBlock)block)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[[[sharedIn currentTrackURI] absoluteString]]);
-}
-
-//Returns the currenly playing track index
-RCT_EXPORT_METHOD(currentTrackIndex:(RCTResponseSenderBlock)block)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[@([sharedIn currentTrackIndex])]);
-}
-
-//Returns the current streaming bitrate the receiver is using
-RCT_EXPORT_METHOD(targetBitrate:(RCTResponseSenderBlock)block)
-{
-  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[@([sharedIn targetBitrate])]);
-}
 
 
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
