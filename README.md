@@ -155,7 +155,7 @@ Example:
 
 `SpotifyModule.targetBitrate((res)=>{console.log(res);});`
 
-### *Methods:*
+#### *Methods:*
 
 **[-logout:](https://developer.spotify.com/ios-sdk-docs/Documents/Classes/SPTAudioStreamingController.html#//api/name/logout:)**
 
@@ -310,4 +310,30 @@ Go to the previous track in the queue
 Example:
 
 `SpotifyModule.skipPrevious((error)=>{console.log(error);});`
+
+___
+
+###SPTSearch Class:
+### *Methods:*
+
+**[+performSearchWithQuery:queryType:offset:accessToken:market:callback:](https://developer.spotify.com/ios-sdk-docs/Documents/Classes/SPTSearch.html#//api/name/performSearchWithQuery:queryType:offset:accessToken:market:callback:)**
+
+Go to the previous track in the queue *You need to have a session first*
+
+| Parameter |description|
+| ------ |:-------------------------------|
+| searchQuery |The query to pass to the search|
+| searchQueryType |The type of search to do ('track', 'artist', 'album' or 'playList')|
+| offset |The index at which to start returning results|
+| market |Either a ISO 3166-1 country code to filter the results to, or “from_token” |
+|Callback|callback to be called when the operation is complete. The block will pass an Array filled with json Objects on success, otherwise an error.|
+
+Example:
+
+SpotifyModule.performSearchWithQuery('lacri','artist',0,'US',(err, res)=>{
+      console.log('error', err);
+      console.log('result', res);
+    });
+
+___
 
