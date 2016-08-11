@@ -57,7 +57,7 @@ RCT_EXPORT_METHOD(isPlaying:(RCTResponseSenderBlock)block)
   block(@[@([sharedIn isPlaying])]);
 }
 
-//Returns the volume
+//Returns the volume, as a value between 0.0 and 1.0.
 RCT_EXPORT_METHOD(volume:(RCTResponseSenderBlock)block)
 {
   SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
@@ -180,8 +180,7 @@ RCT_EXPORT_METHOD(setIsPlaying:(BOOL)playing callback:(RCTResponseSenderBlock)bl
   }];
 }
 
-//Play a list of Spotify URIs.(at most 100 tracks).`SPTPlayOptions` containing extra information about the play request
-//such as which track to play and from which starting position within the track.
+//Play a list of Spotify URIs.(at most 100 tracks).`SPTPlayOptions` containing extra information about the play request such as which track to play and from which starting position within the track.
 RCT_EXPORT_METHOD(playURIs:(NSArray *)uris withOptions:(NSDictionary *)options callback:(RCTResponseSenderBlock)block)
 {
   SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
@@ -304,6 +303,59 @@ RCT_EXPORT_METHOD(skipPrevious:(RCTResponseSenderBlock)block)
 /////////////////////////////////
 
 
+/////////////////////////////////
+////  Search
+/////////////////////////////////
+
+///-----------------------------
+/// Properties
+///-----------------------------
+
+///-----------------------------
+/// Methods
+///-----------------------------
+
+//Performs a search with a given query, offset and market filtering, returns an Array filled with json Objects
+/*
+ */
+RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
+                  queryType:(NSString *)searchQueryType
+                  offset:(NSInteger)offset
+                  market:(NSString *)market
+                  callback:(RCTResponseSenderBlock)block)
+{
+  SPTSearchQueryType parm;
+  //set the SPTSearchQueryType depending on searchQueryType
+  if ([searchQueryType  isEqual: @"track"]){
+    parm = SPTQueryTypeTrack;
+  } else if ([searchQueryType  isEqual: @"artist"]){
+    parm = SPTQueryTypeArtist;
+  } else if ([searchQueryType  isEqual: @"album"]){
+    parm = SPTQueryTypeAlbum;
+  } else if ([searchQueryType  isEqual: @"playList"]){
+    parm = SPTQueryTypePlaylist;
+  }
+  
+  [SPTSearch performSearchWithQuery:searchQuery queryType:parm offset:offset accessToken:[[[SpotifyAuth sharedManager] session] accessToken] market:market callback:^(NSError *error, id object) {
+    
+    NSMutableDictionary *resObj = [NSMutableDictionary dictionary];
+    NSMutableArray *resArr = [NSMutableArray array];
+    for (int i; i < [[object items] count]; i++){
+      SPTPartialArtist *temp = (SPTPartialArtist *)[object items][i];
+      resObj[[temp name]] = [temp decodedJSONObject];
+      [resArr addObject:[temp decodedJSONObject]];
+    }
+    NSLog(@"ret %@ ret", [object nextPageURL]);
+    block(@[[NSNull null],resArr]);
+    return;
+  }];
+  
+}
+
+/////////////////////////////////
+////  END Search
+/////////////////////////////////
+
 
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
   [[SPTAuth defaultInstance] setClientID:clientID];
@@ -339,9 +391,12 @@ RCT_EXPORT_METHOD(skipPrevious:(RCTResponseSenderBlock)block)
       if (self.player == nil) {
         //Set the session property to the seesion we got from the login Url
         _session = session;
+        [self setSession: session];
         SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
         [sharedIn startWithClientId:[SPTAuth defaultInstance].clientID error:nil];
         self.player = sharedIn;
+        //keep this one
+        [[SpotifyAuth sharedManager] setSession:session];
 
       }
       
@@ -367,6 +422,11 @@ RCT_EXPORT_METHOD(skipPrevious:(RCTResponseSenderBlock)block)
   
   return NO;
 }
+
+-(void)setSession:(SPTSession *)session{
+  _session = session;
+}
+
 
 + (id)sharedManager {
   static SpotifyAuth *sharedMyManager = nil;
