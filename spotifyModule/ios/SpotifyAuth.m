@@ -402,20 +402,6 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
       
       [self.player loginWithAccessToken:_session.accessToken];
       
-      //this is used to play a song
-      NSURL *trackURI = [NSURL URLWithString:@"spotify:track:58s6EuEYJdlb0kO7awm3Vp"];
-      NSURL *trackURI2 = [NSURL URLWithString:@"spotify:track:6HxIUB3fLRS8W3LfYPE8tP"];
-      //this method plays the tracks in an Array
-      [self.player playURIs:@[trackURI, trackURI2, trackURI, trackURI2] fromIndex:0 callback:^(NSError *error) {
-        if (error != nil) {
-          NSLog(@"*** Starting playback got error: %@", error);
-          return;
-        }
-      }];
-  
-      
-      
-      
     }];
     return YES;
   }

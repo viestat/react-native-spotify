@@ -2,7 +2,40 @@
 
 
 ##Intro
-This is a native module that exposes the Spotify SDK (IOS) to JavaScript.
+This is a native module that exposes the Spotify SDK (IOS [beta 17](https://github.com/spotify/ios-sdk/releases/tag/beta-17)) to JavaScript.
+
+___
+
+##Set-up:
+1. Download the Spotify IOS SDK beta 17 [here](https://github.com/spotify/ios-sdk/releases/tag/beta-17) and unzip it.
+
+2. Open your react native project in Xcode and drag the unzipped `Spotify.framework` file into the `Frameworks` group in your Xcode project (create the group if it doesn’t already exist). In the import dialog, tick the box for **Copy items into destinations group folder** (or **Destination: Copy items if needed**).
+
+3. Please folow the instructions on the **"Creating Your Client ID, Secret and Callback URI"** and **"Setting Up Your Build Environment"** sections of the [*Spotify iOS SDK Tutorial*](xx)
+
+4. From this project directory, go to `react-native-spotify/spotifyModule/ios` and copy the following files to the `ios` directory of your project:
+	* `SpotifyLoginViewController.m`
+	* `SpotifyLoginViewController.h`
+	* `SpotifyAuth.m`
+	* `SpotifyAuth.h`
+
+___
+
+##How to use:
+```javascript
+//You need to import NativeModules to your view
+import { NativeModules } from 'react-native';
+
+//Assign our module from NativeModules and assign it to a variable
+var SpotifyAuth = NativeModules.SpotifyAuth;
+
+class yourComponent extends Component {
+	//Some code ...
+	someMethod(){
+		SpotifyAuth.setClientID('Your ClientId','Your redirectURL', [scope]);
+	}
+}
+```  
 
 ___
 
