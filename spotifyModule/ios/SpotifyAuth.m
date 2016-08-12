@@ -140,6 +140,7 @@ RCT_EXPORT_METHOD(setVolume:(CGFloat)volume callback:(RCTResponseSenderBlock)blo
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -154,6 +155,7 @@ RCT_EXPORT_METHOD(setTargetBitrate:(NSInteger)bitrate callback:(RCTResponseSende
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -168,6 +170,7 @@ RCT_EXPORT_METHOD(seekToOffset:(CGFloat)offset callback:(RCTResponseSenderBlock)
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -182,6 +185,7 @@ RCT_EXPORT_METHOD(setIsPlaying:(BOOL)playing callback:(RCTResponseSenderBlock)bl
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -210,6 +214,7 @@ RCT_EXPORT_METHOD(playURIs:(NSArray *)uris withOptions:(NSDictionary *)options c
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -230,6 +235,7 @@ RCT_EXPORT_METHOD(replaceURIs:(NSArray *)uris withCurrentTrack:(int)index callba
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -244,6 +250,7 @@ RCT_EXPORT_METHOD(playURI:(NSString *)uri callback:(RCTResponseSenderBlock)block
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -258,6 +265,7 @@ RCT_EXPORT_METHOD(queueURI:(NSString *)uri callback:(RCTResponseSenderBlock)bloc
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -272,6 +280,7 @@ RCT_EXPORT_METHOD(stop:(RCTResponseSenderBlock)block)
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -286,6 +295,7 @@ RCT_EXPORT_METHOD(skipNext:(RCTResponseSenderBlock)block)
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
@@ -300,6 +310,7 @@ RCT_EXPORT_METHOD(skipPrevious:(RCTResponseSenderBlock)block)
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
+      [self checkSession];
     }
     return;
   }];
