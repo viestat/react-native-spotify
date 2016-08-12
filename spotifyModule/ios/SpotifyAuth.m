@@ -14,6 +14,8 @@
 @interface SpotifyAuth ()
 @property (nonatomic, strong) SPTSession *session;
 @property (nonatomic, strong) SPTAudioStreamingController *player;
+@property (nonatomic, strong) NSString *clientID;
+@property (nonatomic, strong) NSArray *requestedScopes;
 @end
 
 @implementation SpotifyAuth
@@ -25,6 +27,11 @@ RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
                   setRedirectURL:(NSString *) redirectURL
                   setRequestedScopes:(NSArray *) requestedScopes)
 {
+  SpotifyAuth *sharedManager = [SpotifyAuth sharedManager];
+  //set the sharedManager properties
+  [sharedManager setClientID:clientID];
+  [sharedManager setRequestedScopes:requestedScopes];
+  [sharedManager setMyScheme:redirectURL];
   [self startAuth:clientID setRedirectURL:redirectURL setRequestedScopes:requestedScopes];
 }
 
@@ -358,9 +365,39 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
 
 
 - (BOOL)startAuth:(NSString *) clientID setRedirectURL:(NSString *) redirectURL setRequestedScopes:(NSArray *) requestedScopes {
+  NSMutableArray *scopes = [NSMutableArray array];
+  //Turn scope arry of strings into an array of SPTAuth...Scope objects
+  for (int i = 0; i < [requestedScopes count]; i++) {
+    if([requestedScopes[i]  isEqual: @"playlist-read-private"]){
+      [scopes addObject: SPTAuthPlaylistReadPrivateScope];
+    } else if([requestedScopes[i]  isEqual: @"playlist-modify-private"]){
+      [scopes addObject: SPTAuthPlaylistModifyPrivateScope];
+    } else if([requestedScopes[i]  isEqual: @"playlist-modify-public"]){
+      [scopes addObject: SPTAuthPlaylistModifyPublicScope];
+    } else if([requestedScopes[i]  isEqual: @"user-follow-modify"]){
+      [scopes addObject: SPTAuthUserFollowModifyScope];
+    } else if([requestedScopes[i]  isEqual: @"user-follow-read"]){
+      [scopes addObject: SPTAuthUserFollowReadScope];
+    } else if([requestedScopes[i]  isEqual: @"user-library-read"]){
+      [scopes addObject: SPTAuthUserLibraryReadScope];
+    } else if([requestedScopes[i]  isEqual: @"user-library-modify"]){
+      [scopes addObject: SPTAuthUserLibraryModifyScope];
+    } else if([requestedScopes[i]  isEqual: @"user-read-private"]){
+      [scopes addObject: SPTAuthUserReadPrivateScope];
+    } else if([requestedScopes[i]  isEqual: @"user-read-birthdate"]){
+      [scopes addObject: SPTAuthUserReadBirthDateScope];
+    } else if([requestedScopes[i]  isEqual: @"user-read-email"]){
+      [scopes addObject: SPTAuthUserReadEmailScope];
+    } else if([requestedScopes[i]  isEqual: @"streaming"]){
+      [scopes addObject: SPTAuthStreamingScope];
+    }
+  }
+  /*
+   FOUNDATION_EXPORT NSString * const SPTAuthStreamingScope;
+   */
   [[SPTAuth defaultInstance] setClientID:clientID];
   [[SPTAuth defaultInstance] setRedirectURL:[NSURL URLWithString:redirectURL]];
-  [[SPTAuth defaultInstance] setRequestedScopes:@[SPTAuthStreamingScope]];
+  [[SPTAuth defaultInstance] setRequestedScopes:scopes];
   
   // Construct a login URL 
   NSURL *loginURL = [[SPTAuth defaultInstance] loginURL];
@@ -409,10 +446,39 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
   return NO;
 }
 
+//Check if session is valid and renew it if not
+-(void)checkSession{
+  SpotifyAuth *sharedManager = [SpotifyAuth sharedManager];
+  if (![[sharedManager session] isValid]){
+    [[SPTAuth defaultInstance] renewSession:[sharedManager session] callback:^(NSError *error, SPTSession *session) {
+      if(error != nil){
+        NSLog(@"Error: %@", error);
+        //launch the login again
+        [sharedManager startAuth:sharedManager.clientID setRedirectURL:sharedManager.myScheme setRequestedScopes:sharedManager.requestedScopes];
+      } else {
+        [sharedManager setSession:session];
+        [[sharedManager player] loginWithAccessToken:session.accessToken];
+      }
+    }];
+  }
+  
+}
+
 -(void)setSession:(SPTSession *)session{
   _session = session;
 }
 
+-(void)setMyScheme:(NSString *)myScheme{
+  _myScheme = myScheme;
+}
+
+-(void)setClientID:(NSString *)clientID{
+  _clientID = clientID;
+}
+
+-(void)setRequestedScopes:(NSArray *)requestedScopes{
+  _requestedScopes = requestedScopes;
+}
 
 + (id)sharedManager {
   static SpotifyAuth *sharedMyManager = nil;

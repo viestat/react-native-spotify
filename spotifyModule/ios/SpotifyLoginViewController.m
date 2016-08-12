@@ -57,12 +57,12 @@
 
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+      SpotifyAuth *sharedManager = [SpotifyAuth sharedManager];
       NSURL *url = navigationAction.request.URL;
       //Set myScheme to your own Url Scheme
-      NSString *myScheme = @"Your-Url-Scheme";
+  NSString *myScheme = [[sharedManager myScheme] stringByReplacingOccurrencesOfString:@"://callback" withString:@""];
       if ([url.scheme isEqualToString:myScheme]) {
         [self hideTheThing];
-        SpotifyAuth *sharedManager = [SpotifyAuth sharedManager];
         [sharedManager urlCallback:url];
         decisionHandler(WKNavigationActionPolicyCancel);
         return;

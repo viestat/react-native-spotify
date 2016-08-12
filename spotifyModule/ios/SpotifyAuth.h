@@ -10,6 +10,7 @@
 #import "RCTBridgeModule.h"
 
 @interface SpotifyAuth : NSObject <RCTBridgeModule>
+@property (nonatomic, strong) NSString *myScheme;
 -(BOOL)urlCallback: (NSURL *)url;
 + (id)sharedManager;
 @end
