@@ -2,7 +2,7 @@
 
 
 ##Intro
-This is a native module that exposes the Spotify SDK (IOS [beta 17](https://github.com/spotify/ios-sdk/releases/tag/beta-17)) to JavaScript.
+A native module that allows you to use the Spotify SDK API (IOS [beta 17](https://github.com/spotify/ios-sdk/releases/tag/beta-17)) with JavaScript through react-native.
 
 ___
 
@@ -13,7 +13,7 @@ ___
 
 3. Open your react native project in Xcode and drag the unzipped `Spotify.framework` file into the `Frameworks` group in your Xcode project (create the group if it doesn’t already exist). In the import dialog, tick the box for **Copy items into destinations group folder** (or **Destination: Copy items if needed**).
 
-4. Please folow the instructions on the **"Creating Your Client ID, Secret and Callback URI"** and **"Setting Up Your Build Environment"** sections of the [*Spotify iOS SDK Tutorial*](xx)
+4. Please folow the instructions on the **"Creating Your Client ID, Secret and Callback URI"** and **"Setting Up Your Build Environment"** sections of the [*Spotify iOS SDK Tutorial*](https://developer.spotify.com/technologies/spotify-ios-sdk/tutorial/)
 
 5. From this project directory, go to `react-native-spotify/spotifyModule/ios` and copy the following files to the `ios` directory of your project:
 	* `SpotifyLoginViewController.m`
@@ -34,7 +34,8 @@ var SpotifyAuth = NativeModules.SpotifyAuth;
 class yourComponent extends Component {
 	//Some code ...
 	someMethod(){
-		SpotifyAuth.setClientID('Your ClientId','Your redirectURL', [scope]);
+    //You need this to Auth a user, without it you cant use any method!
+		SpotifyAuth.setClientID('Your ClientId','Your redirectURL', ['streaming']);
 	}
 }
 ```  
@@ -44,6 +45,24 @@ ___
 
 ##Exposed API:
 
+###Auth:
+
+**setClientID:setRedirectURL:setRequestedScopes:**
+
+> **You need this to Auth a user, without it you cant use any other methods!**
+
+Set your Client ID, Redirect URL, Scopes and **start the auth process**
+
+
+| Parameter |description|
+| ------ |:-------------------------------|
+|Client ID|`(String)` The client ID of your [registered Spotify app](https://developer.spotify.com/my-applications/#!/applications)|
+|Redirect URL|`(String)` The Redirect URL of your [registered Spotify app](https://developer.spotify.com/my-applications/#!/applications)|
+|Scopes|`(Array)` list of scopes of your app, [see here](https://developer.spotify.com/web-api/using-scopes/)  |
+
+Example:
+
+`SpotifyAuth.setClientID('your-clientID','your-redirectURL',['streaming',...]);`
 
 ###SPTAudioStreamingController Class:
 ### *Properties:*
@@ -54,7 +73,7 @@ Returns true when SPTAudioStreamingController is initialized, otherwise false
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -67,7 +86,7 @@ Returns true if the receiver is logged into the Spotify service, otherwise false
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -80,7 +99,7 @@ Returns true if the receiver is playing audio, otherwise false
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -93,7 +112,7 @@ Returns the volume
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -106,7 +125,7 @@ Returns true if the receiver expects shuffled playback, otherwise false
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -119,7 +138,7 @@ Returns true if the receiver expects repeated playback, otherwise false
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -132,7 +151,7 @@ Returns the current approximate playback position of the current track
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -145,7 +164,7 @@ Returns the length of the current track
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -158,7 +177,7 @@ Returns the current track URI, playing or not
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -171,7 +190,7 @@ Returns the currenly playing track index
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
@@ -184,13 +203,13 @@ Returns the current streaming bitrate the receiver is using
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback to handle the response|
+|Callback|`(Function)`a callback to handle the response|
 
 Example:
 
 `SpotifyModule.targetBitrate((res)=>{console.log(res);});`
 
-#### *Methods:*
+### *Methods:*
 
 **[-logout:](https://developer.spotify.com/ios-sdk-docs/Documents/Classes/SPTAudioStreamingController.html#//api/name/logout:)**
 
@@ -210,8 +229,8 @@ Set playback volume to the given level. Volume is a value between `0.0` and `1.0
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|volume  |The volume to change to, a number between `0.0` and `1.0`|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+|volume  |`(Number)`The volume to change to, value between `0.0` and `1.0`|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -223,8 +242,8 @@ Set the target streaming bitrate. `0` for low, `1` for normal and `2` for high
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|bitrate|The bitrate to target            |
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+|bitrate|`(Number)`The bitrate to target            |
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -236,8 +255,8 @@ Seek playback to a given location in the current track (in secconds).
 
 | Parameter |description|
 | ------ |:-------------------------------|
-| offset |The time to seek to|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+| offset |`(Number)`The time to seek to|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -249,9 +268,9 @@ Play a list of Spotify URIs.(at most 100 tracks).`SPTPlayOptions` containing ext
 
 | Parameter |description|
 | ------ |:-------------------------------|
-| uris |The array of URI’s to play (at most 100 tracks)|
-| options |Object with trackIndex and/or startTime (can be null)|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+| uris |`(Array)`The array of URI’s to play (at most 100 tracks)|
+| options |`(Object)` with trackIndex:`(Number)` and/or startTime:`(Number)` (can be null)|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -263,9 +282,9 @@ Example:
 
 | Parameter |description|
 | ------ |:-------------------------------|
-| uris |The array of URI’s to play|
-| index |The current track in the list|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+| uris |`(Array)`The array of URI’s to play|
+| index |`(Number)`The current track in the list|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -277,8 +296,8 @@ Play a Spotify URI.
 
 | Parameter |description|
 | ------ |:-------------------------------|
-| uri |The URI to play|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+| uri |`(Number)`The URI to play|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -290,8 +309,8 @@ Queue a Spotify URI.
 
 | Parameter |description|
 | ------ |:-------------------------------|
-| uri |The URI to queue|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+| uri |`(String)`The URI to queue|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -303,8 +322,8 @@ Set the "playing" status of the receiver.
 
 | Parameter |description|
 | ------ |:-------------------------------|
-| playing |Pass true to resume playback, or false to pause it|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+| playing |`(Boolean)`Pass true to resume playback, or false to pause it|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -316,7 +335,7 @@ Stop playback and clear the queue and list of tracks.
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -328,7 +347,7 @@ Go to the next track in the queue
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -340,7 +359,7 @@ Go to the previous track in the queue
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|a callback that will pass back an `NSError` object if an error ocurred|
+|Callback|`(Function)`a callback that will pass back an `NSError` object if an error ocurred|
 
 Example:
 
@@ -357,18 +376,19 @@ Go to the previous track in the queue *You need to have a session first*
 
 | Parameter |description|
 | ------ |:-------------------------------|
-| searchQuery |The query to pass to the search|
-| searchQueryType |The type of search to do ('track', 'artist', 'album' or 'playList')|
-| offset |The index at which to start returning results|
-| market |Either a ISO 3166-1 country code to filter the results to, or “from_token” |
-|Callback|callback to be called when the operation is complete. The block will pass an Array filled with json Objects on success, otherwise an error.|
+| searchQuery |`(String)`The query to pass to the search|
+| searchQueryType |`(String)`The type of search to do ('track', 'artist', 'album' or 'playList')|
+| offset |`(Number)`The index at which to start returning results|
+| market |`(String)`Either a ISO 3166-1 country code to filter the results to, or “from_token” |
+|Callback|`(Function)`callback to be called when the operation is complete. The block will pass an Array filled with json Objects on success, otherwise an error.|
 
 Example:
-
+```javascript
 SpotifyModule.performSearchWithQuery('lacri','artist',0,'US',(err, res)=>{
       console.log('error', err);
       console.log('result', res);
     });
+```
 
 ___
 
