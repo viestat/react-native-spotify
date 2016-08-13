@@ -25,13 +25,28 @@ RCT_EXPORT_MODULE()
 //Start Auth process
 RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
                   setRedirectURL:(NSString *) redirectURL
-                  setRequestedScopes:(NSArray *) requestedScopes)
+                  setRequestedScopes:(NSArray *) requestedScopes
+                  callback:(RCTResponseSenderBlock)block)
 {
   SpotifyAuth *sharedManager = [SpotifyAuth sharedManager];
+  NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
   //set the sharedManager properties
   [sharedManager setClientID:clientID];
   [sharedManager setRequestedScopes:requestedScopes];
   [sharedManager setMyScheme:redirectURL];
+
+   //Observer for successful login
+   [center addObserverForName:@"loginRes" object:nil queue:nil usingBlock:^(NSNotification *notification)
+   {
+     //if there is an error key in the userInfo dictionary send the error, otherwise null
+     if(notification.userInfo[@"error"] != nil){
+       block(@[notification.userInfo[@"error"]]);
+     } else {
+       block(@[[NSNull null]]);
+     }
+     
+   }];
+
   [self startAuth:clientID setRedirectURL:redirectURL setRequestedScopes:requestedScopes];
 }
 
@@ -426,14 +441,18 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
   return YES;
 }
 
--(BOOL)urlCallback: (NSURL *)url {
+-(void)urlCallback: (NSURL *)url {
+  NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+  NSMutableDictionary *loginRes =  [NSMutableDictionary dictionary];
+  loginRes[@"error"] = @"error while attempting to login!";
   if ([[SPTAuth defaultInstance] canHandleURL:url]) {
     [[SPTAuth defaultInstance] handleAuthCallbackWithTriggeredAuthURL:url callback:^(NSError *error, SPTSession *session) {
       
       if (error != nil) {
         NSLog(@"*** Auth error: %@", error);
-        return;
-      }
+        loginRes[@"error"] = @"error while attempting to login!";
+        
+      } else {
       
       // Create a new player if needed
       if (self.player == nil) {
@@ -448,13 +467,17 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
 
       }
       
-      [self.player loginWithAccessToken:_session.accessToken];
+        [self.player loginWithAccessToken:_session.accessToken];
+        
+      }
       
     }];
-    return YES;
+  } else {
+    loginRes[@"error"] = @"error while attempting to login!";
   }
+  [center postNotificationName:@"loginRes" object:nil userInfo:loginRes];
+  [center removeObserver:self name:@"loginRes" object:nil];
   
-  return NO;
 }
 
 //Check if session is valid and renew it if not
