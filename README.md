@@ -35,7 +35,13 @@ class yourComponent extends Component {
 	//Some code ...
 	someMethod(){
     //You need this to Auth a user, without it you cant use any method!
-		SpotifyAuth.setClientID('Your ClientId','Your redirectURL', ['streaming']);
+		SpotifyAuth.setClientID('Your ClientId','Your redirectURL', ['streaming'], (error)=>{
+        if(error){
+          //handle error
+        } else {
+          //handle success
+        }
+      });
 	}
 }
 ```  
@@ -47,7 +53,7 @@ ___
 
 ###Auth:
 
-**setClientID:setRedirectURL:setRequestedScopes:**
+**setClientID:setRedirectURL:setRequestedScopes:callback**
 
 > **You need this to Auth a user, without it you cant use any other methods!**
 
@@ -59,10 +65,11 @@ Set your Client ID, Redirect URL, Scopes and **start the auth process**
 |Client ID|`(String)` The client ID of your [registered Spotify app](https://developer.spotify.com/my-applications/#!/applications)|
 |Redirect URL|`(String)` The Redirect URL of your [registered Spotify app](https://developer.spotify.com/my-applications/#!/applications)|
 |Scopes|`(Array)` list of scopes of your app, [see here](https://developer.spotify.com/web-api/using-scopes/)  |
+|Callback|`(Function)`a callback to handle the login success/error|
 
 Example:
 
-`SpotifyAuth.setClientID('your-clientID','your-redirectURL',['streaming',...]);`
+`SpotifyAuth.setClientID('your-clientID','your-redirectURL',['streaming',...],(error)=>{console.log(error)});`
 
 ###SPTAudioStreamingController Class:
 ### *Properties:*
