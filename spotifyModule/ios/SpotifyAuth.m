@@ -444,7 +444,6 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
 -(void)urlCallback: (NSURL *)url {
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
   NSMutableDictionary *loginRes =  [NSMutableDictionary dictionary];
-  loginRes[@"error"] = @"error while attempting to login!";
   if ([[SPTAuth defaultInstance] canHandleURL:url]) {
     [[SPTAuth defaultInstance] handleAuthCallbackWithTriggeredAuthURL:url callback:^(NSError *error, SPTSession *session) {
       
