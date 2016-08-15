@@ -6,10 +6,6 @@ A native module that allows you to use the Spotify SDK API (IOS [beta 17](https:
 
 ___
 
-##Demo:
-![alt text](https://github.com/viestat/react-native-spotify/blob/master/spotifyModuleDemoEdit.gif?raw=true = 250x "Demo")
-
-___
 
 ##Set-up:
 1. Fork and clone the repo.
@@ -402,6 +398,15 @@ SpotifyModule.performSearchWithQuery('lacri','artist',0,'US',(err, res)=>{
       console.log('result', res);
     });
 ```
+
+___
+
+
+##Demo:
+>Included in the repo.
+
+
+![alt text](https://github.com/viestat/react-native-spotify/blob/master/spotifyModuleDemoEdit.gif?raw=true = 250x "Demo")
 
 ___
 
