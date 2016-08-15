@@ -19,6 +19,27 @@ ___
 ___
 
 ##Set-up:
+###Using npm
+>Recomended
+
+1. Use `npm install react-native-spotify` from the directory of your project in your command line.
+
+2. Download the Spotify IOS SDK beta 17 [here](https://github.com/spotify/ios-sdk/releases/tag/beta-17) and unzip it.
+
+3. Open your react native project in Xcode and drag the unzipped `Spotify.framework` file into the `Frameworks` group in your Xcode project (create the group if it doesn’t already exist). In the import dialog, tick the box for **Copy items into destinations group folder** (or **Destination: Copy items if needed**).
+
+4. Please folow the instructions on the **"Creating Your Client ID, Secret and Callback URI"** and **"Setting Up Your Build Environment"** sections of the [*Spotify iOS SDK Tutorial*](https://developer.spotify.com/technologies/spotify-ios-sdk/tutorial/) 
+>**Important Note!** When adding frameworks to the list in the "**Link Binary With Libraries**" section you wll need to add `WebKit.framework` in addition to those mentioned in the tutorial.
+
+5. Go to `node-modules/react-native-spotify/` and copy the following files to the `ios` directory of your project:
+	* `SpotifyLoginViewController.m`
+	* `SpotifyLoginViewController.h`
+	* `SpotifyAuth.m`
+	* `SpotifyAuth.h`
+
+___
+
+###Using git
 1. Fork and clone the repo.
 
 2. Download the Spotify IOS SDK beta 17 [here](https://github.com/spotify/ios-sdk/releases/tag/beta-17) and unzip it.
