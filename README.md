@@ -6,6 +6,17 @@ A native module that allows you to use the Spotify SDK API (IOS [beta 17](https:
 
 ___
 
+## Overview
+
+* [Set-up](#set-up)
+* [How to use](#how-to-use)
+* [Exposed API](#exposed-api)
+	* [Auth](#auth)
+	* [SPTAudioStreamingController Class](#sptaudiostreamingcontroller-class)
+	* [SPTSearch Class](#sptsearch-class)
+* [Demo](#demo) 
+
+___
 
 ##Set-up:
 1. Fork and clone the repo.
