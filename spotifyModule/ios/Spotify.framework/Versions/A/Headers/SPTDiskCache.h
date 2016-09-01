@@ -19,7 +19,6 @@
 
 /**
  * @brief The `SPTDiskCache` class implements the `SPTDiskCaching` protocol and provides a caching mechanism based on memory mapped files.
- * @see `SPTDiskCaching`
  */
 @interface SPTDiskCache : NSObject <SPTDiskCaching>
 

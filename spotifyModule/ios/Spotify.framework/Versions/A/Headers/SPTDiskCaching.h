@@ -27,11 +27,6 @@ FOUNDATION_EXPORT const NSUInteger SPTDiskCacheBlockSize;
 @protocol SPTCacheData <NSObject>
 
 /**
- * @brief The URI of the cached object.
- */
-@property (nonatomic, copy) NSURL *URI;
-
-/**
  * @brief The unique identifier for the cached object.
  */
 @property (nonatomic, copy) NSString *itemID;
@@ -59,30 +54,14 @@ FOUNDATION_EXPORT const NSUInteger SPTDiskCacheBlockSize;
 
 /**
  * @brief The `SPTDiskCaching` protocol is implemented by classes that handle caching of Spotify data to persistent storage.
- * @see `SPTCacheData`
  */
 @protocol SPTDiskCaching <NSObject>
 
-/**
- * @brief Read an object from disk cache.
- * @note The parameters are not guaranteed to be valid after this method returns.
- * @param URI The URI of the cached object.
- * @param itemID The unique item identifier.
- * @param length The amount of data to read in bytes.
- * @param offset The offset of the cached data.
- * @return The cached data or `nil` if no cached data is available.
- */
-- (id <SPTCacheData>)readCacheDataWithURI:(NSURL *)URI
-                                   itemID:(NSString *)itemID
+
+- (id <SPTCacheData>)readCacheDataWithKey:(NSString*)key
                                    length:(NSUInteger)length
                                    offset:(NSUInteger)offset;
 
-/**
- * @brief Write an object to disk cache.
- * @note The `cacheData` object is not guaranteed to be valid after this method returns.
- * @param cacheData The data object to write.
- * @return `YES` on success, `NO` otherwise.
- */
 - (BOOL)writeCacheData:(id <SPTCacheData>)cacheData;
 
 @end

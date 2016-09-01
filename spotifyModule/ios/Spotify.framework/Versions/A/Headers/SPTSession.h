@@ -19,7 +19,7 @@
 /**
  @brief SPTSession is a class that represents a user session authenticated through the Spotify OAuth service.
  @discussion For persisting the session, you may use `NSKeyedArchiver` to obtain an `NSData` instance, which can
-  be stored securely using Keychain Services.
+ be stored securely using Keychain Services.
  @note A session is valid for a certain period of time, and may be renewed without user intervention using `SPTAuth`.
  @see SPTAuth
  */

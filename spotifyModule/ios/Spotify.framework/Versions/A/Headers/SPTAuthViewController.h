@@ -35,7 +35,7 @@
 
 /**
  An error occured while logging in
- 
+
  @param authenticationViewController The view controller.
  @param error The error (Note that the session object in the `SPTAuth` object passed upon initialization
 	is cleared.)
@@ -54,7 +54,7 @@
  A authentication view controller
 
  To present the authentication dialog on top of your view controller, do like this:
- 
+
  ```
 	authvc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
 	authvc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -94,7 +94,7 @@
 
 /**
  Removes all authentication related cookies from the UIWebView.
- 
+
  @param callback Called when cookies are cleared.
  */
 - (void) clearCookies:(void (^)())callback;

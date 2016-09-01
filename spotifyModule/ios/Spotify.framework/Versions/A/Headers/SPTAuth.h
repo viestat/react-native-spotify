@@ -101,6 +101,12 @@ typedef void (^SPTAuthCallback)(NSError *error, SPTSession *session);
 @property (strong, readwrite) NSArray *requestedScopes;
 
 /**
+ Allow login through Spotify App if installed. 'YES' by default.
+ If set to 'NO' WebView login flow is used.
+ */
+@property (readwrite) BOOL allowNativeLogin;
+
+/**
  The current session, Note: setting this will persist it in `NSUserDefaults standardUserDefaults` if
  a `sessionUserDefaultsKey` is set.
  */
@@ -151,9 +157,14 @@ typedef void (^SPTAuthCallback)(NSError *error, SPTSession *session);
  @param redirectURL Your callback URL as declared in the Spotify Developer Centre.
  @param scopes The custom scopes to request from the auth API.
  @param responseType Authentication response code type, defaults to "code", use "token" if you want to bounce directly to the app without refresh tokens.
+ @param allowNativeLogin Allow login through Spotify App if installed. 'YES' by default. If set to 'NO' WebView login flow is used.
  @return The URL to pass to `UIApplication`'s `-openURL:` method.
  */
-+ (NSURL *)loginURLForClientId:(NSString *)clientId withRedirectURL:(NSURL *)redirectURL scopes:(NSArray *)scopes responseType:(NSString *)responseType;
++ (NSURL *)loginURLForClientId:(NSString *)clientId
+               withRedirectURL:(NSURL *)redirectURL
+                        scopes:(NSArray *)scopes
+                  responseType:(NSString *)responseType
+              allowNativeLogin:(BOOL)allowNativeLogin;
 
 ///----------------------------
 /// @name Handling Authentication Callback URLs
