@@ -19,7 +19,7 @@ ___
 
 ####Methods:
 
-*`-seekToOffset:callback:`
+*`-seekToOffset:callback:` (changed to: `-seekTo:callback`)
 *`-playURIs:withOptions:callback:`
 *`-replaceURIs:withCurrentTrack:callback:`
 *`-playURI:callback:`
