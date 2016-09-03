@@ -80,6 +80,45 @@ RCT_EXPORT_METHOD(volume:(RCTResponseSenderBlock)block)
   block(@[@([sharedIn volume])]);
 }
 
+
+//Provides the data on current/previous/next tracks
+RCT_EXPORT_METHOD(metadata:(RCTResponseSenderBlock)block)
+{
+  NSMutableDictionary *metadataObj = [NSMutableDictionary dictionary];
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  SPTPlaybackMetadata * metadata  = [sharedIn metadata];
+  SPTPlaybackTrack * prevTrack = [metadata prevTrack];
+  SPTPlaybackTrack * currentTrack = [metadata currentTrack];
+  SPTPlaybackTrack * nextTrack = [metadata nextTrack];
+  
+  NSDictionary *prevTrackMetadata = [self dictionaryFromSPTPlaybackTrack: prevTrack];
+  NSDictionary *currentTrackMetadata = [self dictionaryFromSPTPlaybackTrack: currentTrack];
+  NSDictionary *nextTrackMetadata = [self dictionaryFromSPTPlaybackTrack: nextTrack];
+  
+  metadataObj[@"prevTrackMetadata"] = prevTrackMetadata;
+  metadataObj[@"currentTrack"] = currentTrackMetadata;
+  metadataObj[@"nextTrackMetadata"] = nextTrackMetadata;
+  
+  block(@[metadataObj]);
+  
+}
+
+//Provides data on plaback state, playback mode, current position.
+RCT_EXPORT_METHOD(playbackState:(RCTResponseSenderBlock)block)
+{
+  SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
+  SPTPlaybackState *playbackState = [sharedIn playbackState];
+  NSDictionary *playbackStateObj = @{
+    @"isPlaying": @([playbackState isPlaying]),
+    @"isRepeating": @([playbackState isRepeating]),
+    @"isShuffling": @([playbackState isShuffling]),
+    @"isActiveDevice": @([playbackState isActiveDevice]),
+    @"position": @([playbackState position]),
+  };
+  
+  block(@[playbackStateObj]);
+}
+
 //Returns the current streaming bitrate the receiver is using
 RCT_EXPORT_METHOD(targetBitrate:(RCTResponseSenderBlock)block)
 {
@@ -384,6 +423,23 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
     }];
   }
   
+}
+
+-(NSDictionary *)dictionaryFromSPTPlaybackTrack: (SPTPlaybackTrack*) track{
+  NSDictionary *trackMetadata = @{
+    @"name": [track name],
+    @"uri": [track uri],
+    @"playbackSourceUri": [track playbackSourceUri],
+    @"playbackSourceName": [track playbackSourceName],
+    @"artistName": [track artistName],
+    @"artistUri": [track artistUri],
+    @"albumName": [track albumName],
+    @"albumUri": [track albumUri],
+    @"albumCoverArtUri": [track albumCoverArtUri],
+    @"duration": @([track duration]),
+    @"indexInContext": @([track indexInContext]),
+  };
+  return trackMetadata;
 }
 
 -(void)setSession:(SPTSession *)session{
