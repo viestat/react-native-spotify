@@ -168,7 +168,31 @@ Provides the data on current/previous/next tracks
 
 | Parameter |description|
 | ------ |:-------------------------------|
-|Callback|`(Function)`a callback to handle the response|
+|Callback|`(Function)`callback with a metadata object as argument *|
+
+> The `metadata` object has the following sturcture:
+
+```javascript
+// prevTrackMetadata, currentTrackMetadata and nextTrackMetadata keys contain all a similar structure object
+{
+  prevTrackMetadata: {...},
+  currentTrackMetadata: {
+    "name": (String),
+    "uri": (String),
+    "playbackSourceUri": (String),
+    "playbackSourceName": (String),
+    "artistName": (String),
+    "artistUri": (String),
+    "albumName": (String),
+    "albumUri": (String),
+    "albumCoverArtUri": (String),
+    "duration": (Number),
+    "indexInContext": (Number)
+  },
+  nextTrackMetadata: {...},
+}
+```
+
 
 Example:
 
@@ -177,12 +201,24 @@ Example:
 
 **[playbackState]()**
 
-Provides data on plaback state, playback mode, current position.
+Provides data on plaback state, playback mode, current position.  
 
 
 | Parameter |description|
 | ------ |:-------------------------------|
 |Callback|`(Function)`a callback to handle the response|
+
+> The `playbackState` object has the following sturcture:
+
+```javascript
+{
+  "isPlaying": (Bool),
+  "isRepeating": (Bool),
+  "isShuffling": (Bool),
+  "isActiveDevice": (Bool),
+  "position": (Number),
+}
+```
 
 Example:
 

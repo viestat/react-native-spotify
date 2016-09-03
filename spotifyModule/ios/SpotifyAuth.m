@@ -96,7 +96,7 @@ RCT_EXPORT_METHOD(metadata:(RCTResponseSenderBlock)block)
   NSDictionary *nextTrackMetadata = [self dictionaryFromSPTPlaybackTrack: nextTrack];
   
   metadataObj[@"prevTrackMetadata"] = prevTrackMetadata;
-  metadataObj[@"currentTrack"] = currentTrackMetadata;
+  metadataObj[@"currentTrackMetadata"] = currentTrackMetadata;
   metadataObj[@"nextTrackMetadata"] = nextTrackMetadata;
   
   block(@[metadataObj]);
@@ -437,7 +437,7 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
     @"albumUri": [track albumUri],
     @"albumCoverArtUri": [track albumCoverArtUri],
     @"duration": @([track duration]),
-    @"indexInContext": @([track indexInContext]),
+    @"indexInContext": @([track indexInContext])
   };
   return trackMetadata;
 }
