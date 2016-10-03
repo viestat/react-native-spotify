@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "RCTBridgeModule.h"
+#import <Spotify/Spotify.h>
 
-@interface SpotifyAuth : NSObject <RCTBridgeModule>
+@interface SpotifyAuth : NSObject <RCTBridgeModule, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate>
 @property (nonatomic, strong) NSString *myScheme;
 -(void)urlCallback: (NSURL *)url;
 + (id)sharedManager;

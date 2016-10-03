@@ -59,7 +59,8 @@ class logInSuccess extends Component {
           Some music should be playing now!
         </Text>
         <TouchableHighlight style={styles.button} onPress={()=>{
-          SpotifyAuth.isPlaying((res)=>{SpotifyAuth.setIsPlaying(!res, (err)=>{console.log(err)});});
+          SpotifyAuth.metadata((res)=>{
+            console.log(res)});
         }
         }>
           <Text style={styles.btnText}>
@@ -71,7 +72,7 @@ class logInSuccess extends Component {
 
   }
   componentDidMount() {
-      SpotifyAuth.playURIs(["spotify:track:6HxIUB3fLRS8W3LfYPE8tP", "spotify:track:58s6EuEYJdlb0kO7awm3Vp"], {trackIndex :0, startTime:0},(error)=>{console.log('error',error)});  
+      SpotifyAuth.playSpotifyURI("spotify:track:6HxIUB3fLRS8W3LfYPE8tP",0, 0,(error)=>{console.log('error?',error)});  
   }
 }
 //Used to navigate between other components

@@ -13,7 +13,7 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* spotifyModuleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* spotifyModuleTests.m */; };
-		04B491071D58F6730009ED14 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B491061D58F6730009ED14 /* Spotify.framework */; };
+		047EFFB51D78B7CA000A4646 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 047EFFB41D78B7CA000A4646 /* Spotify.framework */; };
 		04B491091D58F6A30009ED14 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B491081D58F6A30009ED14 /* AVFoundation.framework */; };
 		04B4910B1D58F6B80009ED14 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B4910A1D58F6B80009ED14 /* SystemConfiguration.framework */; };
 		04B4910E1D58FB9A0009ED14 /* SpotifyAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B4910D1D58FB9A0009ED14 /* SpotifyAuth.m */; };
@@ -121,7 +121,7 @@
 		00E356EE1AD99517003FC87E /* spotifyModuleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = spotifyModuleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* spotifyModuleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = spotifyModuleTests.m; sourceTree = "<group>"; };
-		04B491061D58F6730009ED14 /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
+		047EFFB41D78B7CA000A4646 /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		04B491081D58F6A30009ED14 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		04B4910A1D58F6B80009ED14 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		04B4910C1D58FB9A0009ED14 /* SpotifyAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifyAuth.h; sourceTree = "<group>"; };
@@ -161,11 +161,11 @@
 				04B491091D58F6A30009ED14 /* AVFoundation.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
-				04B491071D58F6730009ED14 /* Spotify.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
+				047EFFB51D78B7CA000A4646 /* Spotify.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
@@ -236,10 +236,10 @@
 		04B490FB1D58F61F0009ED14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				047EFFB41D78B7CA000A4646 /* Spotify.framework */,
 				04B491121D590A440009ED14 /* WebKit.framework */,
 				04B4910A1D58F6B80009ED14 /* SystemConfiguration.framework */,
 				04B491081D58F6A30009ED14 /* AVFoundation.framework */,
-				04B491061D58F6730009ED14 /* Spotify.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -616,6 +616,11 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../node_modules/react-native/react/**",
+				);
 				INFOPLIST_FILE = spotifyModuleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -629,6 +634,11 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../node_modules/react-native/react/**",
+				);
 				INFOPLIST_FILE = spotifyModuleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

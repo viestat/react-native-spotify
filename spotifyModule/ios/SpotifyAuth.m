@@ -11,7 +11,7 @@
 #import "SpotifyLoginViewController.h"
 #import "AppDelegate.h"
 
-@interface SpotifyAuth ()
+@interface SpotifyAuth () <SPTAudioStreamingDelegate>
 @property (nonatomic, strong) SPTSession *session;
 @property (nonatomic, strong) SPTAudioStreamingController *player;
 @property (nonatomic, strong) NSString *clientID;
@@ -207,7 +207,7 @@ RCT_EXPORT_METHOD(playSpotifyURI:(NSString *)spotifyUri startingWithIndex:(NSUIn
       block(@[[NSNull null]]);
     }else{
       block(@[error]);
-      [self checkSession];
+//      [self checkSession];
     }
     return;
   }];
@@ -387,8 +387,14 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
         _session = session;
         [self setSession: session];
         SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-        [sharedIn startWithClientId:[SPTAuth defaultInstance].clientID error:nil];
+        [sharedIn startWithClientId:[SPTAuth defaultInstance].clientID audioController:nil allowCaching:YES error:nil];
         self.player = sharedIn;
+        
+        self.player.delegate = self;
+        self.player.playbackDelegate = self;
+        self.player.diskCache = [[SPTDiskCache alloc] initWithCapacity:1024 * 1024 * 64];
+        [self.player loginWithAccessToken:[SPTAuth defaultInstance].session.accessToken];
+        
         //keep this one
         [[SpotifyAuth sharedManager] setSession:session];
 
@@ -426,6 +432,8 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
 }
 
 -(NSDictionary *)dictionaryFromSPTPlaybackTrack: (SPTPlaybackTrack*) track{
+  if(track){
+  
   NSDictionary *trackMetadata = @{
     @"name": [track name],
     @"uri": [track uri],
@@ -439,7 +447,10 @@ RCT_EXPORT_METHOD(performSearchWithQuery:(NSString *)searchQuery
     @"duration": @([track duration]),
     @"indexInContext": @([track indexInContext])
   };
-  return trackMetadata;
+    return trackMetadata;
+  } else {
+    return [NSDictionary dictionary];
+  }
 }
 
 -(void)setSession:(SPTSession *)session{
