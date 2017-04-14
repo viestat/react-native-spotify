@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 
-var SpotifyAuth = NativeModules.SpotifyAuth;
+const SpotifyAuth = NativeModules.SpotifyAuth;
 
 class logIn extends Component {
   render() {
