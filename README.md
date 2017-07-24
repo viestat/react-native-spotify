@@ -1,7 +1,7 @@
 # React Native Spotify Module (IOS) 
 
 
-##Intro
+## Intro
 A native module that allows you to use the Spotify SDK API (IOS [beta 17](https://github.com/spotify/ios-sdk/releases/tag/beta-17)) with JavaScript through react-native.
 
 ___
@@ -18,8 +18,8 @@ ___
 
 ___
 
-##Set-up:
-###Using npm
+## Set-up:
+### Using npm
 >Recomended
 
 1. Use `npm install react-native-spotify` from the directory of your project in your command line.
@@ -39,7 +39,7 @@ ___
 
 ___
 
-###Using git
+### Using git
 1. Fork and clone the repo.
 
 2. Download the Spotify IOS SDK beta 17 [here](https://github.com/spotify/ios-sdk/releases/tag/beta-17) and unzip it.
@@ -57,7 +57,7 @@ ___
 
 ___
 
-##How to use:
+## How to use:
 ```javascript
 //You need to import NativeModules to your view
 import { NativeModules } from 'react-native';
@@ -83,9 +83,9 @@ class yourComponent extends Component {
 ___
 
 
-##Exposed API:
+## Exposed API:
 
-###Auth:
+### Auth:
 
 **setClientID:setRedirectURL:setRequestedScopes:callback**
 
@@ -105,7 +105,7 @@ Example:
 
 `SpotifyAuth.setClientID('your-clientID','your-redirectURL',['streaming',...],(error)=>{console.log(error)});`
 
-###SPTAudioStreamingController Class:
+### SPTAudioStreamingController Class:
 ### *Properties:*
 **initialized**
 
@@ -408,7 +408,7 @@ Example:
 
 ___
 
-###SPTSearch Class:
+### SPTSearch Class:
 ### *Methods:*
 
 **[+performSearchWithQuery:queryType:offset:accessToken:market:callback:](https://developer.spotify.com/ios-sdk-docs/Documents/Classes/SPTSearch.html#//api/name/performSearchWithQuery:queryType:offset:accessToken:market:callback:)**
@@ -434,7 +434,7 @@ SpotifyModule.performSearchWithQuery('lacri','artist',0,'US',(err, res)=>{
 ___
 
 
-##Demo:
+## Demo:
 >Included in the repo.
 
 
