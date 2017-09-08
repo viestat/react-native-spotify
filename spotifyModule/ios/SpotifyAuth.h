@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RCTBridgeModule.h"
+#import <SpotifyAuthentication/SpotifyAuthentication.h>
+#import <SpotifyAudioPlayback/SpotifyAudioPlayback.h>
+#import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface SpotifyAuth : NSObject <RCTBridgeModule>
+@interface SpotifyAuth : RCTEventEmitter <RCTBridgeModule, SPTAudioStreamingDelegate>
 @property (nonatomic, strong) NSString *myScheme;
 -(void)urlCallback: (NSURL *)url;
 + (id)sharedManager;
