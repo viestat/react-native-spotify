@@ -23,33 +23,6 @@
 RCT_EXPORT_MODULE()
 
 //Start Auth process
-//RCT_EXPORT_METHOD(setClientID:(NSString *) clientID
-//                  setRedirectURL:(NSString *) redirectURL
-//                  setRequestedScopes:(NSArray *) requestedScopes
-//                  callback:(RCTResponseSenderBlock)block)
-//{
-//  SpotifyAuth *sharedManager = [SpotifyAuth sharedManager];
-//  NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-//  //set the sharedManager properties
-//  [sharedManager setClientID:clientID];
-//  [sharedManager setRequestedScopes:requestedScopes];
-//  [sharedManager setMyScheme:redirectURL];
-//
-//   //Observer for successful login
-//   [center addObserverForName:@"loginRes" object:nil queue:nil usingBlock:^(NSNotification *notification)
-//   {
-//     //if there is an error key in the userInfo dictionary send the error, otherwise null
-//     if(notification.userInfo[@"error"] != nil){
-//       block(@[notification.userInfo[@"error"]]);
-//     } else {
-//       block(@[[NSNull null]]);
-//     }
-//
-//   }];
-//
-//  [self startAuth:clientID setRedirectURL:redirectURL setRequestedScopes:requestedScopes];
-//}
-
 RCT_REMAP_METHOD(
                  initWithCredentials,
                  setClientID:(NSString *) clientID
