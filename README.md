@@ -18,8 +18,10 @@ ___
 
 ___
 
-##Set-up:
-###Using npm
+## Set-up:
+
+### Using npm
+
 >Recommended
 
 1. Use `npm install react-native-spotify` from the directory of your project in your command line.
@@ -437,7 +439,7 @@ ___
 >Included in the repo.
 
 
-![alt text](https://github.com/viestat/react-native-spotify/blob/master/spotifyModuleDemoEdit.gif?raw=true = 250x "Demo")
+![Alt Text](https://github.com/viestat/react-native-spotify/raw/master/spotifyModuleDemoEdit.gif)
 
 ___
 
