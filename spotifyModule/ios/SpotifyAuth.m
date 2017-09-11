@@ -102,7 +102,7 @@ RCT_EXPORT_METHOD(metadata:(RCTResponseSenderBlock)block)
 RCT_EXPORT_METHOD(playbackState:(RCTResponseSenderBlock)block)
 {
   SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[@([[sharedIn playbackState] isPlaying])]);
+  block(@[[sharedIn playbackState]]);
 }
 
 //Returns the current streaming bitrate the receiver is using
@@ -259,7 +259,7 @@ RCT_EXPORT_METHOD(setShuffle:(BOOL)enable callback:(RCTResponseSenderBlock)block
 }
 
 //Set repeat state, on, off or repeat-one
-RCT_EXPORT_METHOD(setRepeat:(SPTRepeatMode)mode callback:(RCTResponseSenderBlock)block)
+RCT_EXPORT_METHOD(setRepeat:(NSInteger)mode callback:(RCTResponseSenderBlock)block)
 {
   SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
   [sharedIn setRepeat:mode callback:^(NSError *error) {
@@ -274,7 +274,7 @@ RCT_EXPORT_METHOD(setRepeat:(SPTRepeatMode)mode callback:(RCTResponseSenderBlock
 }
 
 ///-----------------------------
-/// Listeners
+/// Events
 ///-----------------------------
 
 - (NSArray<NSString *> *)supportedEvents
