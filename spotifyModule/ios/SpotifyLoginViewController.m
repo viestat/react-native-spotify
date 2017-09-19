@@ -61,15 +61,16 @@
   NSURL *url = navigationAction.request.URL;
   //Set myScheme to your own Url Scheme
   NSString *myScheme = [[sharedManager myScheme] stringByReplacingOccurrencesOfString:@"://callback" withString:@""];
-  NSLog(@"tuperra%@", myScheme);
-  if ([url.scheme isEqualToString:myScheme]) {
-    [self hideTheThing];
-    [sharedManager urlCallback:url];
-    decisionHandler(WKNavigationActionPolicyCancel);
-    return;
-  }
-  decisionHandler(WKNavigationActionPolicyAllow);
-}
+      if ([url.scheme isEqualToString:myScheme]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [sharedManager urlCallback:url];
+          [self hideTheThing];
+        });
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+      }
+      decisionHandler(WKNavigationActionPolicyAllow);
+    }
 
 
 /*
