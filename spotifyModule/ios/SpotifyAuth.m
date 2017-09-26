@@ -102,7 +102,14 @@ RCT_EXPORT_METHOD(metadata:(RCTResponseSenderBlock)block)
 RCT_EXPORT_METHOD(playbackState:(RCTResponseSenderBlock)block)
 {
   SPTAudioStreamingController *sharedIn = [SPTAudioStreamingController sharedInstance];
-  block(@[[sharedIn playbackState]]);
+//  block(@[@([[sharedIn playbackState] isPlaying])]);
+  block(@[@{
+    @"isPlaying": @([[sharedIn playbackState] isPlaying]),
+    @"isRepeating": @([[sharedIn playbackState] isRepeating]),
+    @"isShuffling": @([[sharedIn playbackState] isShuffling]),
+    @"isActiveDevice": @([[sharedIn playbackState] isActiveDevice]),
+    @"position": @([[sharedIn playbackState] position])
+  }]);
 }
 
 //Returns the current streaming bitrate the receiver is using
