@@ -118,7 +118,7 @@ class logInSuccess extends Component {
           style={styles.button}
           onPress={() => {
             SpotifyAuth.playbackState((res) => {
-              if(res) {
+              if(res.isPlaying) {
                 SpotifyAuth.setIsPlaying(false, (err) => {
                   if(err){
                     console.warn('Pause', err);
