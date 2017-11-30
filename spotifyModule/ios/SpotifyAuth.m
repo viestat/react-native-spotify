@@ -44,6 +44,8 @@ RCT_REMAP_METHOD(
   self.auth.requestedScopes = [self parseScopes:requestedScopes];
   // Become the streaming controller delegate
   self.player.delegate = self;
+  // Become the playback controller delegate
+  self.player.playbackDelegate = self;
   
   [sharedManager setMyScheme:redirectURL];
   
