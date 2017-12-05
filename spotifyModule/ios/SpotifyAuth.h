@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RCTBridgeModule.h"
+#import <React/RCTBridgeModule.h>
 
 @interface SpotifyAuth : NSObject <RCTBridgeModule>
 @property (nonatomic, strong) NSString *myScheme;
