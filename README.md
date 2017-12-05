@@ -39,6 +39,11 @@ ___
   * `SpotifyAuth.m`
   * `SpotifyAuth.h`
 
+6.Add these references to `AppDelegate.m`
+```
+#import <SpotifyMetadata/SpotifyMetadata.h>
+#import <SpotifyAudioPlayback/SpotifyAudioPlayback.h>
+```
 ___
 
 ### Using git
@@ -71,7 +76,7 @@ class yourComponent extends Component {
   //Some code ...
   someMethod(){
     //You need this to Auth a user, without it you cant use any method!
-    SpotifyModule.setClientID('Your ClientId','Your redirectURL', ['streaming'], (error)=>{
+    SpotifyModule.initWithCredentials('Your ClientId','Your redirectURL', ['streaming'], (error, message)=>{
         if(error){
           //handle error
         } else {
