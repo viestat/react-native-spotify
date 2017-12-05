@@ -20,7 +20,7 @@
 
 @implementation SpotifyAuth
 
-RCT_EXPORT_MODULE()
+RCT_EXPORT_MODULE(SpotifyModule)
 
 //Start Auth process
 RCT_REMAP_METHOD(
