@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -17,38 +11,71 @@ import {
 } from 'react-native';
 
 
-const SpotifyAuth = NativeModules.SpotifyAuth;
+const SpotifyModule = NativeModules.SpotifyModule;
 
 class logIn extends Component {
+
+  componentWillMount() {
+    return SpotifyModule.initWithCredentials('YOUR_CLIENT_ID','YOUR_REDIRECT_URL',['streaming'],(error) => {
+        if(error){
+          alert(`some ${error}`);
+        }
+      });
+    
+  }
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.normalText}>
           React Native Spotify Module Basic Example!
         </Text>
-        <TouchableHighlight style={styles.button} onPress={
-                  ()=>{ 
-                    //Start Auth process
-                    SpotifyAuth.setClientID('your-client-ID','your-redirect-url',['streaming'],(error)=>{
-                      if(!error){
-                        this.props.navigator.replace({component: logInSuccess, title: 'Success'});
-                      } else {
-                        console.log('error:',error);
-                      }
-                    });
-                  }
-                }>
-          <Image resizeMode ={'contain'}
-           style={styles.image}
-           source={require('./assets/login-button-mobile.png')}
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => { 
+            //Start Auth process
+            SpotifyModule.loggedIn((res) => {
+              console.warn(res)
+              if(!res) {
+                SpotifyModule.startAuthenticationFlow((error) => {
+                    if(!error){
+                      this.props.navigator.replace({
+                        component: logInSuccess,
+                        title: 'Success'
+                      });
+                    } else {
+                      alert(error);
+                    }
+                  });
+              } else {
+                this.props.navigator.replace({
+                  component: logInSuccess,
+                  title: 'Success'
+                });
+              }
+            })
+          }}
+        >
+          <Image
+            resizeMode ={'contain'}
+            style={styles.image}
+            source={require('./assets/login-button-mobile.png')}
           />
         </TouchableHighlight>
       </View>
     );
   }
+
 }
 
 class logInSuccess extends Component {
+
+  componentDidMount() {
+    SpotifyModule.initialized((error) => {
+      if(error) {
+        console.warn(error)
+      }
+    });
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -56,12 +83,57 @@ class logInSuccess extends Component {
           LogIn Success!
         </Text>
         <Text style={styles.normalText}>
-          Some music should be playing now!
+          Select a song to start!
         </Text>
-        <TouchableHighlight style={styles.button} onPress={()=>{
-          SpotifyAuth.isPlaying((res)=>{SpotifyAuth.setIsPlaying(!res, (err)=>{console.log(err)});});
-        }
-        }>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => {
+            SpotifyModule.playSpotifyURI("spotify:track:12x8gQl2UYcQ3tizSfoPbZ", 0, 0.0, (error) => {
+              if(error) {
+                console.error('Something went wrong')
+              }
+            });
+          }}
+        >
+          <Text style={styles.btnSong}>
+            1. Sheen - Xeno & Oaklander
+          </Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => {
+            SpotifyModule.playSpotifyURI("spotify:track:0U0ldCRmgCqhVvD6ksG63j", 0, 0.0, (error) => {
+              if(error) {
+                console.error('Something went wrong')
+              }
+            });
+          }}
+        >
+          <Text style={styles.btnSong}>
+            2. Nightcall - Kavinsky
+          </Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => {
+            SpotifyModule.playbackState((res) => {
+              if(res.isPlaying) {
+                SpotifyModule.setIsPlaying(false, (err) => {
+                  if(err){
+                    console.warn('Pause', err);
+                  }
+                });
+              } else {
+                SpotifyModule.setIsPlaying(true, (err) => {
+                  if(err){
+                    console.warn('Play', err);
+                  }
+                });
+              }
+            })
+          }}
+        >
           <Text style={styles.btnText}>
             Play/Pause
           </Text>
@@ -70,10 +142,9 @@ class logInSuccess extends Component {
       );
 
   }
-  componentDidMount() {
-      SpotifyAuth.playURIs(["spotify:track:6HxIUB3fLRS8W3LfYPE8tP", "spotify:track:58s6EuEYJdlb0kO7awm3Vp"], {trackIndex :0, startTime:0},(error)=>{console.log('error',error)});  
-  }
+
 }
+
 //Used to navigate between other components
 class spotifyModule extends Component {
   render(){
@@ -115,6 +186,13 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    margin: 10,
+    color: 'white'
+  },
+  btnSong: {
+    fontSize: 15,
     fontWeight: 'bold',
     textAlign: 'center',
     margin: 10,
