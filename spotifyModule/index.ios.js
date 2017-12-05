@@ -11,12 +11,12 @@ import {
 } from 'react-native';
 
 
-const SpotifyAuth = NativeModules.SpotifyAuth;
+const SpotifyModule = NativeModules.SpotifyModule;
 
 class logIn extends Component {
 
   componentWillMount() {
-    return SpotifyAuth.initWithCredentials('YOUR_CLIENT_ID','YOUR_REDIRECT_URL',['streaming'],(error) => {
+    return SpotifyModule.initWithCredentials('YOUR_CLIENT_ID','YOUR_REDIRECT_URL',['streaming'],(error) => {
         if(error){
           alert(`some ${error}`);
         }
@@ -33,10 +33,10 @@ class logIn extends Component {
           style={styles.button}
           onPress={() => { 
             //Start Auth process
-            SpotifyAuth.loggedIn((res) => {
+            SpotifyModule.loggedIn((res) => {
               console.warn(res)
               if(!res) {
-                SpotifyAuth.startAuthenticationFlow((error) => {
+                SpotifyModule.startAuthenticationFlow((error) => {
                     if(!error){
                       this.props.navigator.replace({
                         component: logInSuccess,
@@ -70,7 +70,7 @@ class logIn extends Component {
 class logInSuccess extends Component {
 
   componentDidMount() {
-    SpotifyAuth.initialized((error) => {
+    SpotifyModule.initialized((error) => {
       if(error) {
         console.warn(error)
       }
@@ -88,7 +88,7 @@ class logInSuccess extends Component {
         <TouchableHighlight
           style={styles.button}
           onPress={() => {
-            SpotifyAuth.playSpotifyURI("spotify:track:12x8gQl2UYcQ3tizSfoPbZ", 0, 0.0, (error) => {
+            SpotifyModule.playSpotifyURI("spotify:track:12x8gQl2UYcQ3tizSfoPbZ", 0, 0.0, (error) => {
               if(error) {
                 console.error('Something went wrong')
               }
@@ -102,7 +102,7 @@ class logInSuccess extends Component {
         <TouchableHighlight
           style={styles.button}
           onPress={() => {
-            SpotifyAuth.playSpotifyURI("spotify:track:0U0ldCRmgCqhVvD6ksG63j", 0, 0.0, (error) => {
+            SpotifyModule.playSpotifyURI("spotify:track:0U0ldCRmgCqhVvD6ksG63j", 0, 0.0, (error) => {
               if(error) {
                 console.error('Something went wrong')
               }
@@ -117,15 +117,15 @@ class logInSuccess extends Component {
         <TouchableHighlight
           style={styles.button}
           onPress={() => {
-            SpotifyAuth.playbackState((res) => {
+            SpotifyModule.playbackState((res) => {
               if(res.isPlaying) {
-                SpotifyAuth.setIsPlaying(false, (err) => {
+                SpotifyModule.setIsPlaying(false, (err) => {
                   if(err){
                     console.warn('Pause', err);
                   }
                 });
               } else {
-                SpotifyAuth.setIsPlaying(true, (err) => {
+                SpotifyModule.setIsPlaying(true, (err) => {
                   if(err){
                     console.warn('Play', err);
                   }
