@@ -1,6 +1,6 @@
 {
   "name": "react-native-spotify",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "A native module that allows you to use the Spotify SDK API (IOS) with JavaScript through react-native.",
   "main": "index.js",
   "scripts": {
